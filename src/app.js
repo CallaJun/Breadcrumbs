@@ -1,7 +1,13 @@
 /**
- * Welcome to Pebble.js!
- *
- * This is where you write your app.
+ * Breadcrumbs
+ * By Calla and Sammo
+ * Breadcrumbs revolutionizes the lowly walk. For too long, people have started out walking in
+ * strange places, seeing wondrous sights, never to find them again. But no longer. With breadcrumbs,
+ * YOU choose the route, not Google, not Siri, but you. And Breadcrumbs acts as you cartographer: not
+ * only does it remember your route, but it remembers things that caught your interest, and reminds 
+ * you to find that little gem of a shop again, that quaint museum, that delectable delicatessan. You
+ * can even share your opinions of these byways with other users of breadcrumbs, and indeed, the world. 
+ * So fear no longer -- march forth, and know that your route will not be lost to the sands of time.
  */
 
 var UI = require('ui');
