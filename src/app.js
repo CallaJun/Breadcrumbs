@@ -14,11 +14,14 @@ var UI = require('ui');
 var Vector2 = require('vector2');
 
 // Mode
-var layBread = true; // Lays bread by default. When false, follows bread crumbs.
+var layBread = false; // Lays bread by default once target location is set. When false, follows bread crumbs.
 
 // Important locations
 var currentLocation;
+var prevLocation;
 var targetLocation;
+
+var crumbs;
 
 var main = new UI.Card({
   title: 'Pebble.js',
@@ -66,6 +69,27 @@ main.on('click', 'select', function(e) {
   wind.show();
 });
 
+function dist(){
+  if(layBread){
+    setCurrentLocation();
+    if(currentLocation - prevLocation > 5){
+      dist();
+    }
+    else{
+      crumbs.add(prevLocation);
+      prevLocation = currentLocation;
+      
+    }
+  }
+  else{
+    recoverCrumbs();
+  }
+}
+
+function recoverCrumbs(){
+  
+}
+
 main.on('click', 'down', function(e) {
   var card = new UI.Card();
   card.title('A Card');
@@ -97,7 +121,6 @@ function locationError(err) {
   console.log('location error (' + err.code + '): ' + err.message);
 }
 
-
 function setCurrentLocation() {
   currentLocation = navigator.geolocation.getCurrentPosition(
     locationSuccess, locationError, locationOptions);
@@ -108,6 +131,7 @@ main.on('longClick', 'select', function(e) {
   card.subtitle('Setting Target Location');
   card.show();
   setTargetLocation();
+  layBread = true;
 });
 
 function setTargetLocation() {
