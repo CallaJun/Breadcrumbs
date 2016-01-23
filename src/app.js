@@ -22,6 +22,7 @@ var prevLocation;
 var targetLocation;
 
 var crumbs;
+var save;
 
 var main = new UI.Card({
   title: 'Pebble.js',
@@ -77,8 +78,7 @@ function dist(){
     }
     else{
       crumbs.add(prevLocation);
-      prevLocation = currentLocation;
-      
+      prevLocation = currentLocation;      
     }
   }
   else{
@@ -87,11 +87,32 @@ function dist(){
 }
 
 function recoverCrumbs(){
+  var savCard = new UI.Card();
+  savCard.title("Do you want to save this route?");
+  savCard.subtitle("Press the top button for yes.");
+  main.on('click', 'up', function(e){
+          for(var i=0; i<crumbs.size(); i++){
+            save.add(crumbs.get(i));
+          }
+          });
   pointTo(crumbs.get(crumbs.size()-1));
   crumbs.remove(crumbs.size()-1);  
 }
 
 function pointTo(pos){
+  setCurrentLocation();
+  //compute direction to walk by comparing currentLocation to pos
+  //var latDiff = pos.coords.latitude - currentLocation.coords.latitude;
+  var longDiff = pos.coords.longitude - currentLocation.coords.longitude;
+  var y = Math.sin(longDiff) * Math.cos(pos.coords.latitude);
+  var x = Math.cos(currentLocation.coords.latitude)*Math.sin(pos.coords.latitude) -
+        Math.sin(currentLocation.coords.latitude)*Math.cos(pos.coords.latitude)*Math.cos(longDiff);
+  var ang = Math.atan2(y, x).toDegrees();
+  var brng = (ang+180)%360;
+  drawPointer(brng);
+}
+
+function drawPointer(bearing){
   
 }
 
