@@ -13,6 +13,13 @@
 var UI = require('ui');
 var Vector2 = require('vector2');
 
+// Mode
+var layBread = true; // Lays bread by default. When false, follows bread crumbs.
+
+// Important locations
+var currentLocation;
+var targetLocation;
+
 var main = new UI.Card({
   title: 'Pebble.js',
   icon: 'images/menu_icon.png',
@@ -69,18 +76,41 @@ main.on('click', 'down', function(e) {
 
 Pebble.addEventListener("appmessage",
   function(e) {
-    // Event popup for testing purposes. Everything in this function is unecessary.
-    var wind = new UI.Window({
-    fullscreen: true,
-    });
-    var textfield = new UI.Text({
-      position: new Vector2(0, 65),
-      size: new Vector2(144, 30),
-      font: 'gothic-24-bold',
-      text: 'appmessage event listener',
-      textAlign: 'center'
-    });
-    wind.add(textfield);
-    wind.show();
+    // Temporarily set current location at bootup
+    setCurrentLocation();
+    // Sets currentLocation as current location, set layBread to true
+    // When user long clicks, call setTargetLocation()
   }
 );
+
+var locationOptions = {
+  //enableHighAccuracy: true, 
+  maximumAge: 10000, 
+  timeout: 10000
+};
+
+function locationSuccess(pos) {
+  console.log('lat= ' + pos.coords.latitude + ' lon= ' + pos.coords.longitude);
+}
+
+function locationError(err) {
+  console.log('location error (' + err.code + '): ' + err.message);
+}
+
+
+function setCurrentLocation() {
+  currentLocation = navigator.geolocation.getCurrentPosition(
+    locationSuccess, locationError, locationOptions);
+}
+main.on('longClick', 'select', function(e) {
+  var card = new UI.Card();
+  card.title('Calculating...');
+  card.subtitle('Setting Target Location');
+  card.show();
+  setTargetLocation();
+});
+
+function setTargetLocation() {
+  setCurrentLocation();
+  targetLocation = currentLocation;
+}
