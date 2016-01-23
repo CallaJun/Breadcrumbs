@@ -73,7 +73,19 @@ main.on('click', 'select', function(e) {
 function dist(){
   if(layBread){
     setCurrentLocation();
-    if(currentLocation - prevLocation > 5){
+    var R = 6371000; // metres
+    var φ1 = currentLocation.coords.latitude.toRadians();
+    var φ2 = prevLocation.coords.latitude.toRadians();
+    var Δφ = φ2 - φ1;
+    var Δλ = (prevLocation.coords.longitude - currentLocation.coords.longitude).toRadians();
+
+    var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+        Math.cos(φ1) * Math.cos(φ2) *
+        Math.sin(Δλ/2) * Math.sin(Δλ/2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    var d = R * c;
+    if(Math.abs(d) > 5){
       dist();
     }
     else{
