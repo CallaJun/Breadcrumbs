@@ -87,6 +87,11 @@ function dist(){
 }
 
 function recoverCrumbs(){
+  pointTo(crumbs.get(crumbs.size()-1));
+  crumbs.remove(crumbs.size()-1);  
+}
+
+function pointTo(pos){
   
 }
 
