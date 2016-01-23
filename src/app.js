@@ -66,3 +66,21 @@ main.on('click', 'down', function(e) {
   card.body('The simplest window type in Pebble.js.');
   card.show();
 });
+
+Pebble.addEventListener("appmessage",
+  function(e) {
+    // Event popup for testing purposes. Everything in this function is unecessary.
+    var wind = new UI.Window({
+    fullscreen: true,
+    });
+    var textfield = new UI.Text({
+      position: new Vector2(0, 65),
+      size: new Vector2(144, 30),
+      font: 'gothic-24-bold',
+      text: 'appmessage event listener',
+      textAlign: 'center'
+    });
+    wind.add(textfield);
+    wind.show();
+  }
+);
