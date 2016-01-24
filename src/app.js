@@ -164,6 +164,7 @@ Pebble.addEventListener("appmessage",
   function(e) {
     // Temporarily set current location at bootup
     setCurrentLocation();
+    dist();
     // Sets currentLocation as current location, set layBread to true
     // When user long clicks, call setTargetLocation()
   }
@@ -203,7 +204,7 @@ main.on('longClick', 'select', function(e) {
 });
 
 main.on('longClick', 'up', function(e) {
-  console.log('up was longclicked ice cream')
+  console.log('up was longclicked ice cream');
   var card = new UI.Card();
   card.title('Following breadcrumbs');
   card.show();
