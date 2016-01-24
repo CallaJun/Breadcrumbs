@@ -75,7 +75,7 @@ main.on('click', 'select', function(e) {
 function dist() {
   if(layBread){
     setCurrentLocation();
-    var R = 6371000; // metres
+    var R = 20903520; // Earth's radius in feet
     var φ1 = currentLocation.coords.latitude.toRadians();
     var φ2 = prevLocation.coords.latitude.toRadians();
     var Δφ = φ2 - φ1;
@@ -128,7 +128,7 @@ function pointTo(pos){
 }
 
 function drawPointer(bearing){
-  
+  //Draw a point inscribed in a circle indicating in which direction travel should occur
 }
 
 main.on('click', 'down', function(e) {
