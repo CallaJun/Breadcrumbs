@@ -6,6 +6,8 @@
  * YOU choose the route, not Google, not Siri, nor anyone or anything else. And Breadcrumbs acts as your
  * cartographer: not only does it remember your route, but it remembers things that caught your interest,
  * and reminds you to find that little gem of a shop again, that quaint museum, that delectable delicatessan.
+ * Eventually, it might even incorporate a camera for transient things of interest, such as flowers that might
+ * disappear soon, but you might want to look for in the future in the same place or identify later.
  * You can even share your opinions of these byways with other users of breadcrumbs, and indeed, the world. 
  * So fear no longer -- march forth, and know that your route will not be lost to the sands of time, unless
  * you wish it to be.
