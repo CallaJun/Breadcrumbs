@@ -27,8 +27,8 @@ var save;
 var main = new UI.Card({
   title: 'Pebble.js',
   icon: 'images/menu_icon.png',
-  subtitle: 'Hello World!',
-  body: 'Press any button.',
+  subtitle: 'Revolutioning the walk',
+  body: 'Long-press the middle button to start your walk',
   subtitleColor: 'indigo', // Named colors
   bodyColor: '#9a0036' // Hex colors
 });
@@ -70,7 +70,9 @@ main.on('click', 'select', function(e) {
   wind.show();
 });
 
-function dist(){
+// Decides whether or not to drop a breadcrumb based on user distance (from last
+// breadcrumb) and direction.
+function dist() {
   if(layBread){
     setCurrentLocation();
     var R = 6371000; // metres
@@ -98,22 +100,23 @@ function dist(){
   }
 }
 
+// Once mode has been changed to the return trip, prepares return path
 function recoverCrumbs(){
   var savCard = new UI.Card();
   savCard.title("Do you want to save this route?");
   savCard.subtitle("Press the top button for yes.");
-  main.on('click', 'up', function(e){
-          for(var i=0; i<crumbs.size(); i++){
+  main.on('click', 'up', function(e) {
+          for(var i = 0; i < crumbs.size(); i++){
             save.add(crumbs.get(i));
           }
           });
-  pointTo(crumbs.get(crumbs.size()-1));
-  crumbs.remove(crumbs.size()-1);  
+  pointTo(crumbs.get(crumbs.size() - 1));
+  crumbs.remove(crumbs.size() - 1);  
 }
 
 function pointTo(pos){
   setCurrentLocation();
-  //compute direction to walk by comparing currentLocation to pos
+  // Compute direction to walk by comparing currentLocation to pos
   //var latDiff = pos.coords.latitude - currentLocation.coords.latitude;
   var longDiff = pos.coords.longitude - currentLocation.coords.longitude;
   var y = Math.sin(longDiff) * Math.cos(pos.coords.latitude);
@@ -163,6 +166,7 @@ function setCurrentLocation() {
   currentLocation = navigator.geolocation.getCurrentPosition(
     locationSuccess, locationError, locationOptions);
 }
+
 main.on('longClick', 'select', function(e) {
   var card = new UI.Card();
   card.title('Calculating...');
