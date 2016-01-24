@@ -129,6 +129,24 @@ function pointTo(pos){
 
 function drawPointer(bearing){
   //Draw a point inscribed in a circle indicating in which direction travel should occur
+  var wind = new UI.Window();
+  var circle = new UI.Circle({
+    position: new Vector2(wind.width/2, wind.height/2),
+    radius: Math.min(wind.width/2, wind.height/2),
+    backgroundColor: 'clear',
+    borderColor: 'white',
+  });
+  wind.add(circle);
+  wind.show(circle);
+  
+  var point = new UI.Circle({
+    position: new Vector2(wind.width/2+(Math.cos(bearing)*circle.radius), wind.height/2+(Math.sin(bearing)*circle.radius)),
+    radius: 5,
+    backgroundColor: 'clear',
+    borderColor: 'white',
+  });
+  wind.add(point);
+  wind.show(point);
 }
 
 main.on('click', 'down', function(e) {
