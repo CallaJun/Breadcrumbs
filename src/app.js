@@ -24,6 +24,8 @@ var targetLocation;
 var crumbs;
 var save;
 
+var card;
+
 var main = new UI.Card({
   title: 'Pebble.js',
   icon: 'images/menu_icon.png',
@@ -175,6 +177,10 @@ var locationOptions = {
 
 function locationSuccess(pos) {
   console.log('lat= ' + pos.coords.latitude + ' lon= ' + pos.coords.longitude);
+  // Printing out new location
+  //var card = new UI.Card();
+  card.body(pos.coords.latitude + ', ' + pos.coords.longitude);
+  card.show();
 }
 
 function locationError(err) {
@@ -185,16 +191,12 @@ function setCurrentLocation() {
   currentLocation = navigator.geolocation.getCurrentPosition(
     locationSuccess, locationError, locationOptions);
   
-  // Printing out new location
-  var card = new UI.Card();
-  card.title(currentLocation.coords.latitude + ', ' + currentLocation.coords.longitude);
-  card.show();
 }
 
 main.on('longClick', 'select', function(e) {
-  var card = new UI.Card();
+  card = new UI.Card();
   card.title('Calculating...');
-  card.subtitle('Setting Target Location');
+  card.subtitle('Setting Location');
   card.show();
   setTargetLocation();
   layBread = true;
