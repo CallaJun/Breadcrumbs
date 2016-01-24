@@ -3,11 +3,12 @@
  * By Calla and Sammo
  * Breadcrumbs revolutionizes the lowly walk. For too long, people have started out walking in
  * strange places, seeing wondrous sights, never to find them again. But no longer. With breadcrumbs,
- * YOU choose the route, not Google, not Siri, but you. And Breadcrumbs acts as you cartographer: not
- * only does it remember your route, but it remembers things that caught your interest, and reminds 
- * you to find that little gem of a shop again, that quaint museum, that delectable delicatessan. You
- * can even share your opinions of these byways with other users of breadcrumbs, and indeed, the world. 
- * So fear no longer -- march forth, and know that your route will not be lost to the sands of time.
+ * YOU choose the route, not Google, not Siri, nor anyone or anything else. And Breadcrumbs acts as your
+ * cartographer: not only does it remember your route, but it remembers things that caught your interest,
+ * and reminds you to find that little gem of a shop again, that quaint museum, that delectable delicatessan.
+ * You can even share your opinions of these byways with other users of breadcrumbs, and indeed, the world. 
+ * So fear no longer -- march forth, and know that your route will not be lost to the sands of time, unless
+ * you wish it to be.
  */
 
 var UI = require('ui');
@@ -17,20 +18,21 @@ var Vector2 = require('vector2');
 var layBread; // Lays bread by default once target location is set. When false, follows bread crumbs.
 
 // Important locations
-var currentLocation;
-var prevLocation;
+var currentLocation = {};
+var prevLocation = {};
 var targetLocation;
 
 var crumbs = [];
 var save = [];
 
-var card;
+
+  var card = new UI.Card();
 
 var main = new UI.Card({
   title: 'Pebble.js',
   icon: 'images/menu_icon.png',
   subtitle: 'Revolutionizing the walk',
-  body: 'Long-press the middle button to start your walk',
+  body: 'Hold down the middle button for two seconds to start your walk',
   subtitleColor: 'indigo', // Named colors
   bodyColor: '#9a0036' // Hex colors
 });
@@ -38,6 +40,7 @@ var main = new UI.Card({
 main.show();
 
 main.on('click', 'up', function(e) {
+  card.hide();
   var menu = new UI.Menu({
     sections: [{
       items: [{
@@ -58,6 +61,7 @@ main.on('click', 'up', function(e) {
 });
 
 main.on('click', 'select', function(e) {
+  card.hide();
   var wind = new UI.Window({
     fullscreen: true,
   });
@@ -78,9 +82,9 @@ function dist() {
   if(layBread){
     setCurrentLocation();
     var R = 20903520; // Earth's radius in feet
-    var φ1 = currentLocation.coords.latitude.toRadians();
-    var φ2 = prevLocation.coords.latitude.toRadians();
-    var Δφ = φ2 - φ1;
+    var φ1 = prevLocation.coords.latitude.toRadians();
+    var φ2 = currentLocation.coords.latitude.toRadians();
+    var Δφ = φ1 - φ2;
     var Δλ = (prevLocation.coords.longitude - currentLocation.coords.longitude).toRadians();
 
     var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
@@ -104,6 +108,7 @@ function dist() {
 
 // Once mode has been changed to the return trip, prepares return path
 function recoverCrumbs(){
+  card.hide();
   var savCard = new UI.Card();
   savCard.title("Do you want to save this route?");
   savCard.subtitle("Press the top button for yes.");
@@ -153,7 +158,8 @@ function drawPointer(bearing){
 }
 
 main.on('click', 'down', function(e) {
-  var card = new UI.Card();
+  card.hide();
+  //var card = new UI.Card();
   card.title('A Card');
   card.subtitle('Is a Window');
   card.body('The simplest window type in Pebble.js.');
@@ -177,11 +183,13 @@ var locationOptions = {
 };
 
 function locationSuccess(pos) {
+  card.hide();
   console.log('lat= ' + pos.coords.latitude + ' lon= ' + pos.coords.longitude);
   // Printing out new location
-  //var card = new UI.Card();
+ // var card1 = new UI.Card();
   card.body(pos.coords.latitude + ', ' + pos.coords.longitude);
   card.show();
+  
 }
 
 function locationError(err) {
@@ -195,17 +203,19 @@ function setCurrentLocation() {
 }
 
 main.on('longClick', 'select', function(e) {
-  card = new UI.Card();
+  card.hide();
+  //var card = new UI.Card();
   card.title('Calculating...');
-  card.subtitle('Setting Location');
+  //card.subtitle('Setting Location');
   card.show();
   setTargetLocation();
   layBread = true;
 });
 
 main.on('longClick', 'up', function(e) {
+  card.hide();
   console.log('up was longclicked ice cream');
-  var card = new UI.Card();
+  //var card2 = new UI.Card();
   card.title('Following breadcrumbs');
   card.show();
   layBread = false;
