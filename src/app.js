@@ -14,7 +14,7 @@ var UI = require('ui');
 var Vector2 = require('vector2');
 
 // Mode
-var layBread = false; // Lays bread by default once target location is set. When false, follows bread crumbs.
+var layBread; // Lays bread by default once target location is set. When false, follows bread crumbs.
 
 // Important locations
 var currentLocation;
@@ -27,7 +27,7 @@ var save;
 var main = new UI.Card({
   title: 'Pebble.js',
   icon: 'images/menu_icon.png',
-  subtitle: 'Revolutioning the walk',
+  subtitle: 'Revolutionizing the walk',
   body: 'Long-press the middle button to start your walk',
   subtitleColor: 'indigo', // Named colors
   bodyColor: '#9a0036' // Hex colors
@@ -88,11 +88,11 @@ function dist() {
 
     var d = R * c;
     if(Math.abs(d) > 5){
-      dist();
+      return;
     }
     else{
       crumbs.add(prevLocation);
-      prevLocation = currentLocation;      
+      prevLocation = currentLocation;
     }
   }
   else{
@@ -140,7 +140,8 @@ function drawPointer(bearing){
   wind.show(circle);
   
   var point = new UI.Circle({
-    position: new Vector2(wind.width/2+(Math.cos(bearing)*circle.radius), wind.height/2+(Math.sin(bearing)*circle.radius)),
+    position: new Vector2(wind.width / 2 + (Math.cos(bearing) * circle.radius), 
+                          wind.height / 2 + (Math.sin(bearing) * circle.radius)),
     radius: 5,
     backgroundColor: 'clear',
     borderColor: 'white',
@@ -183,6 +184,11 @@ function locationError(err) {
 function setCurrentLocation() {
   currentLocation = navigator.geolocation.getCurrentPosition(
     locationSuccess, locationError, locationOptions);
+  
+  // Printing out new location
+  var card = new UI.Card();
+  card.title(currentLocation.coords.latitude + ', ' + currentLocation.coords.longitude);
+  card.show();
 }
 
 main.on('longClick', 'select', function(e) {
@@ -192,6 +198,14 @@ main.on('longClick', 'select', function(e) {
   card.show();
   setTargetLocation();
   layBread = true;
+});
+
+main.on('longClick', 'up', function(e) {
+  console.log('up was longclicked ice cream')
+  var card = new UI.Card();
+  card.title('Following breadcrumbs');
+  card.show();
+  layBread = false;
 });
 
 function setTargetLocation() {
