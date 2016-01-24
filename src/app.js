@@ -21,8 +21,8 @@ var currentLocation;
 var prevLocation;
 var targetLocation;
 
-var crumbs;
-var save;
+var crumbs = [];
+var save = [];
 
 var card;
 
@@ -93,7 +93,7 @@ function dist() {
       return;
     }
     else{
-      crumbs.add(prevLocation);
+      crumbs.push(prevLocation);
       prevLocation = currentLocation;
     }
   }
@@ -109,11 +109,11 @@ function recoverCrumbs(){
   savCard.subtitle("Press the top button for yes.");
   main.on('click', 'up', function(e) {
           for(var i = 0; i < crumbs.size(); i++){
-            save.add(crumbs.get(i));
+            save.push(crumbs[i]);
           }
           });
-  pointTo(crumbs.get(crumbs.size() - 1));
-  crumbs.remove(crumbs.size() - 1);  
+  var cur = crumbs.pop();
+  pointTo(cur);
 }
 
 function pointTo(pos){
@@ -171,7 +171,7 @@ Pebble.addEventListener("appmessage",
 );
 
 var locationOptions = {
-  //enableHighAccuracy: true, 
+  enableHighAccuracy: true, 
   maximumAge: 10000, 
   timeout: 10000
 };
